@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block title %}Homebase Realty - Contact Us{% endblock %}
+	{% block content %}
+
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
+		<div class="container text-white">
+			<h2>Contact us</h2>
+		</div>
+	</section>
+	<!--  Page top end -->
+
+	<!-- Breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="container">
+			<a href=""><i class="fa fa-home"></i>Home</a>
+			<span><i class="fa fa-angle-right"></i>Contact Us</span>
+		</div>
+	</div>
+
+	<!-- page -->
+	<section class="page-section blog-page">
+		<div class="container">
+			<div class="contact-info-warp">
+				<p><i class="fa fa-map-marker"></i>Your address goes here</p>
+				<p><a href="#" style="color: white;"><i class="fa fa-envelope"></i>E-mail address</a></p>
+				<p><a href="#" style="color: white;"><i class="fa fa-phone"></i>Phone number</a></p>
+			</div>
+			<div class="row">
+
+				<div class="col-lg-4">
+					<img src="{% static 'img/contact.jpg' %}" alt="">
+				</div>
+				<div class="col-lg-8">
+					<div class="contact-right">
+						{% if messages %}
+						<div id="reach-us">
+							{% for message in messages %}
+                              <div class="alert {{message.tags}} alert-dismissible fade show" style="margin-top:10px" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true" style="color: black !important;">&times;</span>
+                                    </button>
+                                    {{message}}
+                              </div>
+							{% endfor %}
+						</div>
+						<br>
+				{% endif %}
+						<div class="section-title">
+							<h3>Get in touch</h3>
+							<p>Please, feel free to reach out to us for any enquiry.</p>
+						</div>
+						<form class="contact-form" action="#reach-us" method="post">
+							{% csrf_token %}
+							<div class="row">
+								<div class="col-md-4">
+									<input type="text" placeholder="Your Name" name="name">
+								</div>
+								<div class="col-md-4">
+									<input type="text" placeholder="Your Email Address" name="email">
+								</div>
+								<div class="col-md-4">
+									<input type="text" placeholder="Your Telephone" name="phone">
+								</div>
+								<div class="col-md-12">
+									<textarea  placeholder="Your message" name="message"></textarea>
+									<button class="site-btn" name="contact">SUBMIT NOW</button>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- page end -->
+	{% endblock %}
+

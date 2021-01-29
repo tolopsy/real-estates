@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+	{% block title %}Homebase Properties{% endblock %}
+	{% block content %}
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
+		<div class="container text-white">
+			<h2>OUR {% if prop_type != 'properties' %}{{prop_type|upper}}{% endif %} PROPERTIES</h2>
+		</div>
+	</section>
+	<!--  Page top end -->
+
+	<!-- Breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="container">
+			<a href="{% url 'realty:home' %}"><i class="fa fa-home"></i>Home</a>
+			<span><i class="fa fa-angle-right"></i>{% if prop_type != 'properties' %}{{prop_type|title}}{% endif %} Properties</span>
+		</div>
+	</div>
+
+
+	<!-- page -->
+	<section class="page-section categories-page">
+		<div class="container">
+			<div class="row">
+				{% for property in properties %}
+				<div class="col-lg-4 col-md-6">
+					<!-- feature -->
+					<div class="feature-item">
+						<a href="{{property.get_absolute_url}}">
+							<div class="feature-pic set-bg" data-setbg="{{property.images.all.first.image.url}}">
+								<div class="{% if property.kind == 'sale' %}sale-notic{% else %}rent-notic{% endif %}">
+									FOR {{property.kind}}
+								</div>
+							</div>
+						</a>
+
+						<div class="feature-text">
+							<div class="text-center feature-title">
+								<a href="{{property.get_absolute_url}}"><h5>{{property}}</h5></a>
+								<p><i class="fa fa-map-marker"></i> {{property.address}}</p>
+							</div>
+							<div class="room-info-warp">
+								<div class="room-info">
+									{% for item in property.get_features %}
+									<div class="{% cycle 'rf-left' 'rf-right' %}">
+										{% for each in item %}
+										<p><i class="fa fa-check-circle-o"></i> {{each}}</p>
+										{% endfor %}
+									</div>
+									{% endfor %}
+
+								</div>
+								<div class="room-info">
+
+									<div class="">
+										<p><i class="fa fa-clock-o"></i> {{property.date_created|timesince}} ago</p>
+									</div>
+								</div>
+							</div>
+							<a href="{{property.get_absolute_url}}" class="room-price">&#8358;{{property.price|floatformat:"0"|intcomma}}</a>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% if not properties %}
+				<p style="margin:10px;">There are no {{prop_type}} properties available now</p>
+				{% endif %}
+
+			</div>
+			{% if properties %}
+			<div class="site-pagination">
+				{% if properties.number >= 3 %}
+				<a href="?page=1"><<</a>
+				{% endif %}
+
+				{% if properties.has_previous %}
+				<a href="?page={{properties.previous_page_number}}">{{properties.previous_page_number}}</a>
+				{% endif %}
+
+				<span>{{properties.number}}</span>
+
+				{% if properties.has_next %}
+				<a href="?page={{properties.next_page_number}}">{{properties.next_page_number}}</a>
+				{% endif %}
+
+				{% if properties.number <= properties.paginator.num_pages|add:"-2" %}
+				<a href="?page={{properties.paginator.num_pages}}">>></a>
+				{% endif %}
+
+			</div>
+			{% endif %}
+		</div>
+	</section>
+	<!-- page end -->
+
+
+	<!-- Clients section 
+	<div class="clients-section">
+		<div class="container">
+			<div class="clients-slider owl-carousel">
+				<a href="#">
+					<img src="img/partner/1.png" alt="">
+				</a>
+				<a href="#">
+					<img src="img/partner/2.png" alt="">
+				</a>
+				<a href="#">
+					<img src="img/partner/3.png" alt="">
+				</a>
+				<a href="#">
+					<img src="img/partner/4.png" alt="">
+				</a>
+				<a href="#">
+					<img src="img/partner/5.png" alt="">
+				</a>
+			</div>
+		</div>
+	</div>-->
+	<!-- Clients section end -->
+
+	{% endblock %}

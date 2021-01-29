@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+	{% block title %}Homebase Blog{% endblock %}
+
+	{% block content %}
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
+		<div class="container text-white">
+			<h2>Blog</h2>
+		</div>
+	</section>
+	<!--  Page top end -->
+
+	<!-- Breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="container">
+			<a href="{% url 'realty:home' %}"><i class="fa fa-home"></i>Home</a>
+			<span><i class="fa fa-angle-right"></i>Blog</span>
+		</div>
+	</div>
+
+	<!-- page -->
+	<section class="page-section blog-page">
+		<div class="container">
+			{% if posts %}
+			<div class="row">
+				{% for post in posts %}
+				<!-- blog post -->
+				<div class="col-lg-4 col-md-6 blog-item">
+					<img src="{{post.image.url}}" alt="">
+					<h5><a href="{{post.get_absolute_url}}">{{post}}</a></h5>
+					<div class="blog-meta">
+						<span><i class="fa fa-user"></i>{{post.author.username}}</span>
+						<span><i class="fa fa-clock-o"></i>{{post.publish|date:"d M, Y"}}</span>
+					</div>
+					<a href="{{post.get_absolute_url}}"><p>{{post.body|safe|truncatewords:20}}</p></a>
+				</div>
+				{% endfor %}
+			</div>
+
+			<div class="site-pagination">
+				{% if posts.number >= 3 %}
+				<a href="?page=1"><<</a>
+				{% endif %}
+
+				{% if posts.has_previous %}
+				<a href="?page={{posts.previous_page_number}}">{{posts.previous_page_number}}</a>
+				{% endif %}
+
+				<span>{{posts.number}}</span>
+
+				{% if posts.has_next %}
+				<a href="?page={{posts.next_page_number}}">{{posts.next_page_number}}</a>
+				{% endif %}
+
+				{% if posts.number <= posts.paginator.num_pages|add:"-2" %}
+				<a href="?page={{posts.paginator.num_pages}}">>></a>
+				{% endif %}
+			</div>
+			{% endif %}
+		</div>
+	</section>
+	<!-- page end -->
+
+	{% endblock %}

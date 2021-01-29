@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block title %}Homebase Realty - About Us{% endblock %}
+
+	{% block content %}
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
+		<div class="container text-white">
+			<h2>About us</h2>
+		</div>
+	</section>
+	<!--  Page top end -->
+
+	<!-- Breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="container">
+			<a href=""><i class="fa fa-home"></i>Home</a>
+			<span><i class="fa fa-angle-right"></i>About us</span>
+		</div>
+	</div>
+
+	<!-- page -->
+	<section class="page-section">
+		<div class="container">
+			<img class="mb-5" src="{% static 'img/about.jpg' %}" alt="">
+			<div class="row about-text">
+				<div class="col-xl-6 about-text-left">
+					<h5>ABOUT US</h5>
+					<p>This is the most prominent place where customers learn about your company. It is always important to keep this section as precise as possible stating in clear terms what your realty company specializes in and how your company manage operations to make sure you serve your clients well</p>
+					<p>When you buy homebase, it is our responsibility as your IT department to make sure that your contents on this website are good enough to build trust in prospects and existing customers. We always have our partner's back.</p>
+				</div>
+				<div class="col-xl-6 about-text-right">
+					<h5>OUR SERVICES</h5>
+					<p>We offer varieties of services ranging from short lets to long term property investment</p>
+					<ul class="about-list">
+						<li><i class="fa fa-check-circle-o"></i>A brief note on one of your services</li>
+						<li><i class="fa fa-check-circle-o"></i>A brief note on one of your services</li>
+						<li><i class="fa fa-check-circle-o"></i>A brief note on one of your services</li>
+						<li><i class="fa fa-check-circle-o"></i>A brief note on one of your services</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Review section -->
+		<section class="review-section set-bg" data-setbg="{%static 'img/review-bg.jpg' %}">
+			<div class="container">
+				<div class="review-slider owl-carousel">
+					<div class="review-item text-white">
+						
+						<p>“This is how testimonials given by your customers and clients will appear on your website when you buy homebase. Every section of homebase was built to instill trust in your prospective and existing customers”</p>
+						<h5>Abayomi Olanrewaju</h5>
+						<span>Developer at Tolufy</span>
+						<div class="clint-pic set-bg" data-setbg="{% static 'img/review/1.jpg' %}"></div>
+					</div>
+					<div class="review-item text-white">
+						
+						<p>“Thanks to Homebase, I invested a few millions in one of their managed properties. Now, I earn about 20 percents with annual increase to my return on investment. Homebase has the best offers in real estate investment”</p>
+						<h5>Onyinye Chuka</h5>
+						<span>MEP's Director</span>
+						<div class="clint-pic set-bg" data-setbg="{% static 'img/review/1.jpg' %}"></div>
+					</div>
+					<div class="review-item text-white">
+						
+						<p>“I highly recommend homebase to anyone. Right from my first phone call to  the day I finally bought a property from them, I got the best treatment I ever had from a realty company.”</p>
+						<h5>Usman Abubakar</h5>
+						<span>Foreign Exchange Expert</span>
+						<div class="clint-pic set-bg" data-setbg="{% static 'img/review/1.jpg' %}"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- Review section end-->
+
+	</section>
+	<!-- page end -->
+	{% endblock %}
+

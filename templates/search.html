@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+	{% block title %}Homebase Properties{% endblock %}
+	{% block content %}
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
+		<div class="container text-white">
+			<h2>Search for "{{search}}"</h2>
+		</div>
+	</section>
+	<!--  Page top end -->
+
+	<!-- Breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="container">
+			<a href="{% url 'realty:home' %}"><i class="fa fa-home"></i> Home</a>
+            <span><i class="fa fa-angle-right"></i><a href="{% url 'realty:properties' 'properties' %}">Properties</a></span>
+			<span><i class="fa fa-angle-right"></i>search result for {{search|lower|truncatechars:30}}</span>
+		</div>
+	</div>
+
+
+	<!-- page -->
+	<section class="page-section categories-page">
+		<div class="container">
+			<div class="row">
+				{% for property, _ in properties %}
+				<div class="col-lg-4 col-md-6">
+					<!-- feature -->
+					<div class="feature-item">
+						<a href="{{property.get_absolute_url}}">
+							<div class="feature-pic set-bg" data-setbg="{{property.images.all.first.image.url}}">
+								<div class="{% if property.kind == 'sale' %}sale-notic{% else %}rent-notic{% endif %}">
+									FOR {{property.kind}}
+								</div>
+							</div>
+						</a>
+
+						<div class="feature-text">
+							<div class="text-center feature-title">
+								<a href="{{property.get_absolute_url}}"><h5>{{property}}</h5></a>
+								<p><i class="fa fa-map-marker"></i> {{property.address}}</p>
+							</div>
+							<div class="room-info-warp">
+								<div class="room-info">
+									{% for item in property.get_features %}
+									<div class="{% cycle 'rf-left' 'rf-right' %}">
+										{% for each in item %}
+										<p><i class="fa fa-check-circle-o"></i> {{each}}</p>
+										{% endfor %}
+									</div>
+									{% endfor %}
+
+								</div>
+								<div class="room-info">
+
+									<div class="">
+										<p><i class="fa fa-clock-o"></i> {{property.date_created|timesince}} ago</p>
+									</div>
+								</div>
+							</div>
+							<a href="{{property.get_absolute_url}}" class="room-price">&#8358;{{property.price|floatformat:"0"|intcomma}}</a>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+				{% if not properties %}
+				<p style="margin:10px;">There are no listed property for this search. Please, Contact us for more enquiries</p>
+				{% endif %}
+
+			</div>
+
+		</div>
+	</section>
+	<!-- page end -->
+    {% if posts %}
+    <!-- Breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="container">
+			<a href="{% url 'realty:home' %}"><i class="fa fa-home"></i> Home</a>
+            <a href="{% url 'blog:list' %}"><i class="fa fa-angle-right"></i>Blog</a>
+			<span><i class="fa fa-angle-right"></i>search result for {{search|lower|truncatechars:30}}</span>
+		</div>
+	</div>
+
+    <!-- page -->
+	<section class="page-section blog-page">
+		<div class="container">
+
+			<div class="row">
+				{% for post, _ in posts %}
+				<!-- blog post -->
+				<div class="col-lg-4 col-md-6 blog-item">
+					<img src="{{post.image.url}}" alt="">
+					<h5><a href="{{post.get_absolute_url}}">{{post}}</a></h5>
+					<div class="blog-meta">
+						<span><i class="fa fa-user"></i>{{post.author.username}}</span>
+						<span><i class="fa fa-clock-o"></i>{{post.publish|date:"d M, Y"}}</span>
+					</div>
+					<a href="{{post.get_absolute_url}}"><p>{{post.body|safe|truncatewords:20}}</p></a>
+				</div>
+				{% endfor %}
+			</div>
+
+		</div>
+	</section>
+	<!-- page end -->
+    {% endif %}
+
+
+	{% endblock %}

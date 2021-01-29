@@ -1,0 +1,97 @@
+{% load humanize %}
+{% load static %}
+{% load realty_tags %}
+<html>
+<body>
+
+<div id="page-fit">
+
+		<h1 id="receipt-header">HOMEBASE RECEIPT</h1>
+
+		<div id="identity">
+
+            <p id="address">Homebase Realty <br>
+			01 Your Address Street, <br>
+			Victoria Island, Lagos	<br>
+
+			Phone: (+234) 812 126-5056</p>
+
+            <div id="logo">
+              <img id="image" src="https://homerealty.herokuapp.com/static/img/logo.png" alt="logo" />
+            </div>
+
+		</div>
+
+		<div style="clear:both"></div>
+
+		<div id="customer">
+
+            <p id="customer-title">{{sale.client}}</p>
+
+            <table id="meta">
+                <tr>
+                    <td class="meta-head">Receipt ID</td>
+                    <td>{{sale.sale_id}}</td>
+                </tr>
+                <tr>
+
+                    <td class="meta-head">Date</td>
+                    <td>{{sale.date_sold|date:"F d, Y"}}</td>
+                </tr>
+                <tr>
+                    <td class="meta-head">Amount Paid</td>
+                    <td><div class="due">&#8358;{{sale.get_total_price.normalize|intcomma}}</div></td>
+                </tr>
+
+            </table>
+
+		</div>
+
+		<table id="detail">
+
+		  <tr>
+		      <th>Item</th>
+		      <th>Description</th>
+		      <th>Unit Price</th>
+		      <th>Quantity</th>
+		      <th>Total Price</th>
+		  </tr>
+
+		  <tr class="item-row">
+		      <td class="item-name">{{sale.property}}</td>
+		      <td class="description">{{sale.description}}</td>
+		      <td>&#8358;{{sale.property.price.normalize|intcomma}}</td>
+		      <td>{{sale.quantity}} {{sale.property.scale}}{{sale.quantity|pluralize}}</td>
+		      <td>&#8358;{{sale.get_total_price.normalize|intcomma}}</td>
+		  </tr>
+
+		  <tr></tr>
+		  <tr>
+
+		    <td colspan="5" class="blank"></td>
+		  </tr>
+
+		  <tr>
+		      <td colspan="1" class="total-line balance">Amount Paid in words:</td>
+		      <td class="total-value balance" colspan="4">{{sale.get_total_price.normalize|inwords}}</td>
+		  </tr>
+
+		  <tr>
+		      <td colspan="1" class="total-line balance">Amount Paid in figures:</td>
+		      <td class="total-value balance" colspan="4">&#8358;{{sale.get_total_price.normalize|intcomma}}</td>
+		  </tr>
+
+
+
+		</table>
+
+		<div id="terms">
+		  <h5>Thank you for patronizing us at Homebase</h5>
+		  <p>Here is how your receipts to clients/customers would look. You can request for change when you purchase homebase platform.</p> <p><strong>Proudly Developed by <a href="https://www.tolufytech.com"
+		  	style="color: #f4730b;">Tolufy</a></strong></p>
+		</div>
+
+	</div>
+
+</body>
+</html>

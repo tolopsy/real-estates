@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+	{% block title %}Homebase - {{property}}{% endblock %}
+	{% block content %}
+	<!-- Page top section -->
+	<section class="page-top-section set-bg" data-setbg="{% static 'img/page-top-bg.jpg' %}">
+		<div class="container text-white">
+			<h2>{{property}}</h2>
+		</div>
+	</section>
+	<!--  Page top end -->
+
+	<!-- Breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="container">
+			<a href="{% url 'realty:home' %}"><i class="fa fa-home"></i>Home</a>
+			<span><i class="fa fa-angle-right"></i><a href="{% url 'realty:properties' 'properties' %}">Properties</a></span>
+			<span><i class="fa fa-angle-right"></i>{{property}}</span>
+		</div>
+	</div>
+
+	<!-- Page -->
+	<section class="page-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 single-list-page">
+					<div class="single-list-slider owl-carousel" id="sl-slider">
+						{% for pic in property.images.all %}
+						<div class="sl-item set-bg" data-setbg="{{pic.image.url}}">
+							<div class="{% if property.kind == 'sale' %}sale-notic{% else %}rent-notic{% endif %}">FOR {{property.kind}}</div>
+						</div>
+						{% endfor %}
+					</div>
+					<div class="owl-carousel sl-thumb-slider" id="sl-slider-thumb">
+						{% for pic in property.images.all %}
+						<div class="sl-thumb set-bg" data-setbg="{{pic.image.url}}"></div>
+						{% endfor %}
+					</div>
+					<div class="single-list-content">
+						<div class="row">
+							<div class="col-xl-8 sl-title">
+								<h2>{{property}}</h2>
+								<p><i class="fa fa-map-marker"></i>{{ property.address }}</p>
+							</div>
+							<div class="col-xl-4">
+								<a href="#"  data-toggle="modal" data-target="#prospect-modal" class="price-btn">&#8358;{{property.price|floatformat:"0"|intcomma}}</a>
+							</div>
+						</div>
+						
+						<h3 class="sl-sp-title">Description</h3>
+						<div class="description">
+							<p>{{property.description}}</p>
+							</div>
+						<h3 class="sl-sp-title">Property Details</h3>
+						<div class="row property-details-list">
+							{% for each in property.feature.all %}
+							<div class="col-md-4 col-sm-6">
+								<p><i class="fa fa-check-circle-o"></i>{{each}}</p>
+							</div>
+							{% endfor %}
+							{% comment %}
+							<div class="col-md-4 col-sm-6">
+								<p><i class="fa fa-check-circle-o"></i> Air conditioning</p>
+								<p><i class="fa fa-check-circle-o"></i> Telephone</p>
+								<p><i class="fa fa-check-circle-o"></i> Laundry Room</p>
+							</div>
+							<div class="col-md-4 col-sm-6">
+								<p><i class="fa fa-check-circle-o"></i> Central Heating</p>
+								<p><i class="fa fa-check-circle-o"></i> Family Villa</p>
+								<p><i class="fa fa-check-circle-o"></i> Metro Central</p>
+							</div>
+							<div class="col-md-4">
+								<p><i class="fa fa-check-circle-o"></i> City views</p>
+								<p><i class="fa fa-check-circle-o"></i> Internet</p>
+								<p><i class="fa fa-check-circle-o"></i> Electric Range</p>
+							</div>
+							{% endcomment %}
+						</div>
+						{% if property.plans.all %}
+						<h3 class="sl-sp-title bd-no">Plans</h3>
+						<div id="accordion" class="plan-accordion">
+							{% for plan in property.plans.all %}
+							<div class="panel">
+								<div class="panel-header" id="heading{{forloop.counter}}">
+									<button class="panel-link {% if forloop.first %}active{% endif %}" data-toggle="collapse" data-target="#collapse{{forloop.counter}}" aria-expanded="{% cycle 'false' 'true' %}" aria-controls="collapse{{forloop.counter}}">{{plan}}	<i class="fa fa-angle-down"></i></button>
+								</div>
+								<div id="collapse{{forloop.counter}}" class="collapse {% if forloop.first %}show{% endif %}" aria-labelledby="heading{{forloop.counter}}" data-parent="#accordion">
+									<div class="panel-body">
+										<img src="{{plan.image.url}}" alt="">
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+
+						</div>
+						{% endif %}
+
+						<div style="text-align: center;">
+							<div style="display: inline-block;" id="complete-order">
+
+								<a href="#" data-toggle="modal" data-target="#prospect-modal" class="price-btn">
+									{% if property.kind == 'sale' %}BUY NOW{% elif property.kind == 'rent' %}RENT NOW
+									{% else %}INVEST NOW{% endif %}
+								</a>
+								{% if order_alert %}
+								<div class="contact-notification">
+									  <div class="alert alert-info alert-dismissible fade show" style="margin-top:10px" role="alert">
+											<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											{{order_alert}}
+									  </div>
+								</div>
+								<br>
+								{% endif %}
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<!-- sidebar -->
+				<div class="col-lg-4 col-md-7 sidebar">
+					<div class="author-card">
+						<div class="author-img set-bg" data-setbg="{% static 'img/jovaughn-stephens.jpg' %}"></div>
+						<div class="author-info">
+							<h5>Sales Consultant's Name</h5>
+							<p>Homebase Support</p>
+						</div>
+						<div class="author-contact">
+							<p><a href="#" style="color: #f4730b;"><i class="fa fa-phone"></i>Phone number</a></p>
+							<p><a href="#" style="color: #f4730b;"><i class="fa fa-envelope"></i>E-mail address</a></p>
+						</div>
+					</div>
+					<div class="contact-form-card" id="reach-us">
+						{% if messages %}
+						<div class="contact-notification">
+							{% for message in messages %}
+                              <div class="alert {{message.tags}} alert-dismissible fade show" style="margin-top:10px" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    {{message}}
+                              </div>
+							{% endfor %}
+						</div>
+						<br>
+					{% endif %}
+						<h5>Do you have any question?</h5>
+						<form action="#reach-us" method="post">
+							{% csrf_token %}
+							<input type="hidden" name="property" value="{{property}}">
+							<input type="text" placeholder="Your Name" name="name" required>
+							<input type="text" placeholder="Your E-mail Address" name="email" required>
+							<input type="text" placeholder="Your Telephone Number" name="phone" required>
+							<textarea placeholder="Your question" name="message" required></textarea>
+							<button name="contact">SEND</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Page end -->
+
+	<!-- Prospect Modal Start -->
+	<div class="container">
+    	<div class="col-md-12">
+        	<div class="modal fade right" id="prospect-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  				aria-hidden="true" data-backdrop="false">
+  				<div class="modal-dialog modal-full-height modal-right modal-notify modal-info" role="document">
+    				<div class="modal-content remodal">
+				      <!--Header-->
+				      <div class="modal-header" style="background-color:#f4730b;color:#ffffff;" >
+				        <p class="heading lead" style="color: #ffffff">
+							{% if property.kind == 'sale' %}Buy{% elif property.kind == 'rent' %}Rent
+									{% else %}Invest in{% endif %} {{property|title}} Now
+						</p>
+
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true" style="color:#ffffff;">×</span>
+				        </button>
+				      </div>
+
+							<!--Body-->
+			      		<div class="modal-body">
+
+			       			<div class="">
+
+			        			<form action="#complete-order" method="post" id="contact-form">
+			            				{% csrf_token %}
+
+				                        <div class="form-group homebase-form-input">
+				                          <input type="text" class="form-control shadow-none" id="name" name="first_name" placeholder="First name" maxlength="100" required>
+				                        </div>
+
+										<div class="form-group homebase-form-input">
+				                          <input type="text" class="form-control shadow-none" id="name" name="last_name" placeholder="Last name" maxlength="100" required>
+				                        </div>
+
+				                        <div class="form-group homebase-form-input">
+				                          <input type="text" class="form-control shadow-none" id="phone" name="phone" placeholder="Telephone number" maxlength="50" required>
+				                        </div>
+
+
+
+				                      <div class="form-group homebase-form-input">
+				                        <input type="email" class="form-control shadow-none" id="email" name="email" placeholder="E-mail address" required>
+				                      </div>
+
+										{% if property.scale != 'none' %}
+				                      <div class="form-group homebase-form-input">
+				                          	<input type="number" step=".01" class="form-control shadow-none"
+												 id="name" name="quantity" placeholder="How many {{property.scale}}s?"
+												 required>
+									  </div>
+										{% else %}
+											<input type="hidden" name="quantity" value="1">
+										{% endif %}
+
+				                      <button type="submit" class="btn send-btn" name="order">Submit</button>
+			                    </form>
+
+			    			</div>
+
+			  			</div>
+
+ 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Close Prospect Modal -->
+	{% endblock %}

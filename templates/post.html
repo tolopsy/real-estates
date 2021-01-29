@@ -1,0 +1,105 @@
+{% extends 'base.html'%}
+{% load static %}
+
+	{% block title %}Homebase | {{post}}{% endblock %}
+	{% block description %}
+	<meta name="description" content="{{post}}">
+	{% endblock %}
+	{% block content %}
+	<!-- Page top section -->
+	<section class="page-top-section single-blog set-bg " data-setbg="{% static 'img/page-top-bg.jpg' %}">
+		<div class="container text-white">
+			<div class="row">
+				<div class="col-xl-8 offset-lg-2">
+					<h2>{{post}}</h2>
+					<a href="#"><i class="fa fa-user"></i>{{post.author.username}}</a>
+					<a href="#"><i class="fa fa-clock-o"></i>{{post.publish|date:"d M, Y"}}</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--  Page top end -->
+
+	<!-- Breadcrumb -->
+	<div class="site-breadcrumb">
+		<div class="container">
+			<a href="{% url 'realty:home' %}"><i class="fa fa-home"></i>Home</a>
+			<a href="{% url 'blog:list' %}"><i class="fa fa-angle-right"></i>Blog</a>
+			<span><i class="fa fa-angle-right"></i>{{post|truncatechars:20}}</span>
+		</div>
+	</div>
+
+	<!-- page -->
+	<section class="page-section single-blog">
+		<div class="container">
+			<div class="row">
+				
+				<div class="col-md-10 singel-blog-content">
+					<img src="{{post.image.url}}" alt="">
+					 <div class="bullet-it">{{post.body|safe}}</div>
+
+					
+					<div class="comment-warp">
+						{% if comments %}
+						<h4 class="comment-title">{{comments.count}} Comment{{comments.count|pluralize}}</h4>
+						<ul class="comment-list">
+							{% for comment in comments %}
+							<li>
+								<div class="comment">
+									<!--
+									<div class="comment-avator set-bg" data-setbg="img/blog/comment/1.jpg"></div>
+									-->
+									<div class="comment-custom">
+										<h5>{{comment.name}} <span>{{comment.created|date:"d F, Y"}}</span></h5>
+										<p>{{comment.body}}</p>
+										
+									</div>
+								</div>
+							</li>
+							{% endfor %}
+						</ul>
+						{% else %}
+						<h4 class="comment-title"> Be the first to comment on this post</h4>
+						{% endif %}
+						<div class="comment-form-warp">
+							<h4 class="comment-title">Leave Your Comment</h4>
+							<form class="comment-form" action="." method="post">
+								{% csrf_token %}
+								<div class="row">
+									<div class="col-md-6">
+										<input type="text" placeholder="Your Name" name="name">
+									</div>
+									<div class="col-md-6">
+										<input type="email" placeholder="Your Email" name="email">
+									</div>
+									<div class="col-lg-9">
+										<textarea placeholder="Your Message" name="body"></textarea>
+										<button class="site-btn" name="comment">SEND COMMENT</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-1 blog-share">
+					<h5>Share</h5>
+					<div class="share-links">
+						<a href="http://www.facebook.com/share.php?u=https%3A%2F%2Fhomerealty.herokuapp.com{{post.get_absolute_url|urlencode:''}}&t={{post.title|urlencode:''}}" target="_blank" class="facebook">
+							<i class="fa fa-facebook"></i>
+						</a>
+						<a href="https://twitter.com/intent/tweet?text={{post.title|urlencode}}&url=https://homerealty.herokuapp.com{{post.get_absolute_url}}&hashtags=realestate" data-size="large" data-text="{{post.title}}" target="_blank" class="twitter">
+							<i class="fa fa-twitter"></i>
+						</a>
+						<a href="https://wa.me/?text=https://homerealty.herokuapp.com{{post.get_absolute_url}}" data-action="share/whatsapp/share" target="_blank" title="Share On WhatsApp" class="whatsapp">
+							<i class="fa fa-whatsapp"></i>
+						</a>
+						<a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fhomerealty.herokuapp.com{{post.get_absolute_url|urlencode:''}}&title={{post.title|urlencode:''}}&summary={{post.title|urlencode:''}}&source=Tolufy Homebase" target="_blank" class="instagram">
+							<i class="fa fa-linkedin"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- page end-->
+	{% endblock %}
